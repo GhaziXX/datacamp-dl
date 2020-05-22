@@ -47,7 +47,7 @@ pip install -r requirements.txt
 ```
 ### Commands
 `-settoken` : **Set Datacamp authentication token and save it locally**.                                                                 
-`-settoken` : **login Using the saved token**.                                                                                         
+`-login` : **login Using the saved token**.                                                                                         
 `-help` : **Show Commands and usage**.                                                                                                   
 `-list` : List your completed **tracks**.                                                                                               
 `-listc` : List your completed **courses**.                                                                                             
