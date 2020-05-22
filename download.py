@@ -11,6 +11,7 @@ from utils import download_course, download_track, get_completed_tracks, get_com
 
 
 def main(argv):
+    print(argv)
     if argv[0] == '-settoken':
         print_dash()
         con.set_token(argv[1])
@@ -22,12 +23,12 @@ def main(argv):
         with open('./token.txt', mode='r') as f:
             t = f.readline()
         con.set_token(t)
-    if not con.active:
-        return
-    if argv[1] == '-help':
+    if argv[0] == '-help':
         print_dash()
         print_desc()
         print_dash()
+    if not con.active:
+        return
     if argv[1] == '-list':
         thread = threading.Thread(target=print_tracks)
         thread.start()

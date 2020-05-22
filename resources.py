@@ -24,6 +24,8 @@ def download_course_data(conn, link, path):
     all_links = [x['href'] for x in dataset]
     sys.stdout.write(
         f'{bcolors.BOLD}Downloading dataset...{bcolors.ENDC}\n')
+    if not os.path.exists(path):
+        os.mkdir(path)
     if(not os.path.exists(os.path.join(path, 'Dataset'))):
         os.mkdir(os.path.join(path, 'Dataset'))
     for link, title in zip(all_links, titles):
