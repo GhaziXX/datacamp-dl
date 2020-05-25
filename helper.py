@@ -1,7 +1,7 @@
 import os
+import string
 import sys
 import time
-import string
 
 
 class bcolors:
@@ -49,6 +49,13 @@ def download_file(con, video_link, location):
     sys.stdout.write('\n')
 
 
+def save_file(filename, content):
+    mkdir(filename)
+    f = open(filename, "w", encoding='utf-8')
+    f.write(content)
+    f.close()
+
+
 def file_exist(file):
     return os.path.isfile(file)
 
@@ -67,7 +74,7 @@ def mkdir(location):
             os.mkdir(location)
 
 
-def embbed_link(link):
+def fix_link(link):
     if '?' in link:
         link += '&embedded=true'
     else:
@@ -76,6 +83,19 @@ def embbed_link(link):
 
 
 def handle_error(con):
-    print(bcolors.FAIL + "Error occured, trying again...")
+    print(bcolors.FAIL + "Error occurred, trying again...")
     con.set_new_session()
     time.sleep(5)
+
+
+def memoize(func):
+    memo = []
+
+    def wrapper():
+        if not memo:
+            value = func()
+            for x in value:
+                memo.append(x)
+        return memo
+
+    return wrapper
