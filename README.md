@@ -5,7 +5,6 @@
 ## Diffrences from the original Repo:
  - Download courses/tracks using links (even if you didn't complete it)
  - Option to download Dataset
- - Using arguments
  
 ## Table of Contents
 - [Datacamp-dl](#datacamp-dl)
@@ -35,7 +34,7 @@ If you find this CLI helpful, please support the developers by starring this rep
 ### Installation
 1. Download this repository or clone it using:
 ```
-git clone https://github.com/GhaziXX/datacamp-dl.git
+git clone https://github.com/GhaziXX/datacamp-dl
 ```
 2. Open the terminal and change the current working directory to the location where you downloaded/cloned the repo, run:
 ```
@@ -45,102 +44,79 @@ cd PATH
 ```
 pip install -r requirements.txt
 ```
-### Commands
-`-settoken` : **Set Datacamp authentication token and save it locally**.                                                                 
-`-login` : **login Using the saved token**.                                                                                         
-`-help` : **Show Commands and usage**.                                                                                                   
-`-list` : List your completed **tracks**.                                                                                               
-`-listc` : List your completed **courses**.                                                                                             
-`-download` : Download command to be used with **[-s,-v,-d,-a,-l,-n,-t,-c]**.                                                           
-`-s` : Download Only **slides**.                                                                                                         
-`-v` : Download Only **videos**.                                                                                                         
-`-d` : Download Only **datasets**.                                                                                                       
-`-a` : Download **slides, Videos and datasets**.                                                                                         
-`-l` : Download by **course/track** link.                                                                                               
-`-n` : Download by **course/track** number listed when using **-list/-listc**.                                                           
-`-t` : Download **Track**.                                                                                                               
-`-c` : Download **Course**.                                                                                                             
-`-path` : Set the downloading path.                                                                                                     
+### Required Arguments
+
+* `-t` or `--token` `YOUR_DATACAMP_AUTH_TOKEN`
+* `-l` or `--list` `T` or `C` such that T to list completed tracks and C for compelted courses
+
+### Optional Arguments
+* `-h` or `--help` show help message
+* `-p` or `--path` Your distination to download the files ; default destination is the current directory
+* `-v` or `--video` to download the videos
+* `-e` or `--exercises`to download the exercises
+* `-d` or `--datasets` to download the datasets
+* `-a` or `--all`to download all the track/course and its data
+
+**Note**: The tool only downloads slides if `-v` and `-e` and `-a` are not specified.
+
 ### How to use
-1. First you should configure your token to be able to download your contents, run:
+1. First you should configure your token to be able to download your contents, run with your arguments:
 ```
-python download.py -settoken YOUR_DATACAMP_AUTH_TOKEN
+python downloader.py -t YOUR_DATACAMP_AUTH_TOKEN -l LIST [-d DESTINATION] [-v] [-e] [-d] [-a]
 ```
-Datacamp authentication token can be found in Datacamp website browser _cookies_. 
+Examples :
+
+I. To list your completed track(s) and download slides, videos and exercises in the current directory, run:
+```
+python downloader.py -s YOUR_DATACAMP_AUTH_TOKEN -l T -v -e
+```
+II. To list your completed track(s) and download slides, videos, exercises and datasets in the current directory, run:
+```
+python downloader.py -s YOUR_DATACAMP_AUTH_TOKEN -l T -a
+```
+III. To list your completed course(s) and download slides and datasets in `C:\` directory, run:
+```
+python downloader.py -s YOUR_DATACAMP_AUTH_TOKEN -l C -p C:\ -d
+```
+
+Datacamp authentication token can be found in Datacamp website browser _cookies_.
 To get your Datacamp authentication, follow these steps:
 
-**Firefox**  
-  1. Visit [datacamp.com](https://datacamp.com) and log in.  
-  2. Open the **Developer Tools** (press `Cmd + Opt + J` on MacOS or `F12` on Windows).  
-  3. Go to **Storage tab**, then **Cookies** > `https://www.datacamp.com`  
+**Firefox**
+  1. Visit [datacamp.com](https://datacamp.com) and log in.
+  2. Open the **Developer Tools** (press `Cmd + Opt + J` on MacOS or `F12` on Windows).
+  3. Go to **Storage tab**, then **Cookies** > `https://www.datacamp.com`
   4. Find `_dct` key, its **Value** is the Datacamp authentication token.
 
-**Chrome**  
-  1. Visit [datacamp.com](https://datacamp.com) and log in.  
-  2. Open the **Developer Tools** (press `Cmd + Opt + J` on MacOS or `F12` on Windows).  
-  3. Go to **Application tab**, then **Storage** > **Cookies** > `https://www.datacamp.com`  
+**Chrome**
+  1. Visit [datacamp.com](https://datacamp.com) and log in.
+  2. Open the **Developer Tools** (press `Cmd + Opt + J` on MacOS or `F12` on Windows).
+  3. Go to **Application tab**, then **Storage** > **Cookies** > `https://www.datacamp.com`
   4. Find `_dct` key, its **Value** is the Datacamp authentication token.
 
-**Security Note**  
+**Security Note**
 Datacamp authentication token is a secret key and is unique to you. **You should not share it publicly**.
 
- 2. To Show help, run:
- ```
- python download.py -help
- ```
- 3. To list your completed track(s), run:
- ```
- python download.py -login -list
- ```
- 4. To list your completed course(s), run:
- ```
- python download.py -login -listc
- ```
- 5. To download track(s) by link, run:
- ```
- python download.py -login -download -t [-s,-v,-d,-a] -l YOUR_TRACK_LINK
- ```
-   - Exemple: 
-   ```
-   python download.py -login -download -t -a -l https://www.datacamp.com/tracks/machine-learning-scientist-with-python
-   ```
-  - NB: you can put as much links as you want in condition they are track links
-  
- 6. To download track(s) by number(in case you have already completed it), run:
- ```
- python download.py -login -download -t [-s,-v,-d,-a] -n YOUR_TRACK_NUMBER
- ```
-   - Exemple: 
-   ```
-   python download.py -login -download -t -a -n 1
-   ```
-   - NB: you can put as much numbers as you want in condition they are listed in your completed tracks
-   
- 7. To download course(s) by number(in case you have already completed it), run:
- ```
- python download.py -login -download -c [-s,-v,-d,-a] -l YOUR_COURSE_LINK
- ```
-   - Exemple: 
-   ```
-   python download.py -login -download -c -a -l https://www.datacamp.com/courses/introduction-to-pyspark
-   ```
-   - NB: you can put as much links as you want in condition they are course links
-   
- 8. To download course(s) by number(in case you have already completed it), run:
- ```
- python download.py -login -download -c [-s,-v,-d,-a] -n YOUR_COURSE_NUMBER
- ```
-   - Exemple: 
-   ```
-   python download.py -login -download -c -a -n 1
-   ```
-   - NB: you can put as much links as you want in condition they are listed in your completed courses
- 9. Additional argument(s):
-    - You can set the downloading path using the commande ```-path```
-      Example: 
-      ```
-      python download.py -login -download -c [-s,-v,-d,-a] -l YOUR_COURSE_LINK -path YOUR_DOWNLOAD_LOCATION
-      ```
+Then if you have an active subscription, you should see the following:
+```
+Hi, YOUR_NAME
+Active subscription found
+====================================================================================================
+1. Introduction to Databases in Python
+2. Building Chatbots in Python
+3. Introduction to Python
+Enter the id(s) you want to download separated by a space or you can enter 'a-b' to download courses from a to b:
+```
+2. Enter the id(s) you want to download, where the id is the number of the course or track shown on the console.
+
+Examples:
+
+I. To download the first course enter `1`
+II. To download the first and third courses enter `1 3`
+III. To download the first three courses enter `1-3`
+
+where `1-3` is the range of the courses you want to download.
+
 ## Disclaimer
 This CLI is provided to help you download Datacamp courses for personal use only. Sharing the content of the courses is strictly prohibited under [Datacamp's Terms of Use](https://www.datacamp.com/terms-of-use/).
 
