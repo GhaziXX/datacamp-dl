@@ -11,13 +11,8 @@ from config import Config as con
 from helper import bcolors
 
 
-<<<<<<< HEAD
-def download_track(url, folder, videos_download, slides_download, datasets_download, exercise_download):
+def download_track(url, folder, videos_download, exercise_download, datasets_download):
     page = con.session.get(helper.fix_link(url))
-=======
-def download_track(track, folder, videos_download, exercise_download, datasets_download):
-    page = con.session.get(helper.fix_link(track.link))
->>>>>>> c25e52db10f3d4911fcbfce3648765973cc6c76b
     soup = BeautifulSoup(page.text, 'html.parser')
     all_courses = soup.findAll('a', {
         'href': re.compile('^/courses/'),
@@ -34,14 +29,10 @@ def download_track(track, folder, videos_download, exercise_download, datasets_d
     sys.stdout.write(
         f'{bcolors.BKBLUE}  {track_title}  {bcolors.BKENDC}\n')
     for i, link in enumerate(all_links):
-        download_course(link, folder, videos_download, slides_download, datasets_download, exercise_download, i + 1)
+        download_course(link, folder, videos_download, exercise_download, datasets_download, i + 1)
 
 
-<<<<<<< HEAD
-def download_course(url, folder, videos_download, slides_download, datasets_download, exercise_download, number=None):
-=======
 def download_course(url, folder, videos_download, exercise_download, datasets_download, number=None):
->>>>>>> c25e52db10f3d4911fcbfce3648765973cc6c76b
     course_id, title = get_course_id_and_title(url)
     title = helper.format_filename(title)
 
@@ -51,8 +42,7 @@ def download_course(url, folder, videos_download, exercise_download, datasets_do
     sys.stdout.write(
         f'{bcolors.BKGREEN} {title}  {bcolors.BKENDC}\n')
 
-    if slides_download:
-        download_slides(course_id, os.path.join(folder, title))
+    download_slides(course_id, os.path.join(folder, title))
 
     if exercise_download:
         download_exercises(course_id, os.path.join(
@@ -62,9 +52,6 @@ def download_course(url, folder, videos_download, exercise_download, datasets_do
             folder, title))
     if videos_download:
         download_videos(course_id, os.path.join(
-            folder, title))
-    if datasets_download:
-        download_datasets(url, os.path.join(
             folder, title))
 
 

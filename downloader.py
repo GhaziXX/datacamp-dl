@@ -13,38 +13,20 @@ from utils import download_course, download_track, get_completed_tracks, get_com
 
 def login_parser():
     parser = ArgumentParser()
-<<<<<<< HEAD
-    parser.add_argument("-t", "--token", required=False, type=str,
-                        help="Specify your Datacamp authentication token.")
-    parser.add_argument("-l", "--list", action='store_true',
-                        help="List completed tracks")
-    parser.add_argument("-lc", "--listc", action='store_true',
-                        help="List completed courses")
-=======
     parser.add_argument("-t", "--token", required=True, type=str,
                         help="Specify your Datacamp authentication token.")
-    parser.add_argument("-l", "--list", required=True, type=int,
+    parser.add_argument("-l", "--list", required=True, type=str,
                         help="List completed (T) for tracks, (C) for courses")
->>>>>>> c25e52db10f3d4911fcbfce3648765973cc6c76b
     parser.add_argument("-p", "--path", required=False, default=os.getcwd(), type=str,
                         help="Path to download the contents, default is the current directory")
     parser.add_argument("-v", "--video", action='store_true',
                         help="Include it if you want to download the videos")
-    parser.add_argument("-s", "--slide", action='store_true',
-                        help="Include it if you want to download the slides")
-    parser.add_argument("-d", "--dataset", action='store_true',
-                        help="Include it if you want to download the datasets")
     parser.add_argument("-e", "--exercise", action='store_true',
                         help="Include it if you want to download the exercises")
-<<<<<<< HEAD
-    parser.add_argument("-a", "--all", action='store_true',
-                        help="Include it if you want to download all the content")
-=======
-    parser.add_argument("-d", "--datasets", action='store_true',
+    parser.add_argument("-d", "--dataset", action='store_true',
                         help="Include it if you want to download the datasets")
     parser.add_argument("-a", "--all", action='store_true',
                         help="Include it if you want to download all the track/course and data")
->>>>>>> c25e52db10f3d4911fcbfce3648765973cc6c76b
     return parser
 
 
@@ -53,8 +35,6 @@ def is_link(l):
 
 
 def get_to_download():
-    #     inp = input('Enter the id(s) you want to download separated by a space or '
-    #                 "you can enter 'a-b' to download courses from a to b: ")
     inp = input('Enter the id(s)/link(s) you want to download separated by a space or '
                 "you can enter 'a-b' to download courses from a to b(if you have completed them): ")
 
@@ -68,7 +48,6 @@ def get_to_download():
             result = [*range(int(result[0]), int(result[1]) + 1)]
         else:
             result.append(int(i))
-    print(output_links, result)
     return (output_links, result)
 
 
@@ -89,15 +68,9 @@ def main():
     print_dash()
 
     while True:
-<<<<<<< HEAD
-        if args.list:
-            handle_tracks(args)
-        elif args.listc:
-=======
         if args.list == 'T':
             handle_tracks(args)
         elif args.list == 'C':
->>>>>>> c25e52db10f3d4911fcbfce3648765973cc6c76b
             handle_courses(args)
 
 
@@ -106,37 +79,24 @@ def handle_courses(args):
     if wait(thread):
         if len(get_completed_courses()) == 0:
             exit()
-<<<<<<< HEAD
-        links = get_to_download()
-        required_courses_by_id = links[1]
-        required_courses_by_link = links[0]
-        if(len(required_courses_by_id) > 0):
-            for course_id in required_courses_by_id:
-                course = list(filter(lambda x: x.id == course_id,
-                                     get_completed_courses()))[0]
-                if(args.all):
-                    download_course(course.link, args.path, args.all, args.all, args.all, args.all)
-                else:
-                    download_course(course.link, args.path, args.video, args.slide, args.dataset, args.exercise)
-        if(len(required_courses_by_link) > 0):
-            for course_link in required_courses_by_link:
-                if(args.all):
-                    download_course(course_link, args.path, args.all, args.all, args.all, args.all)
-                else:
-                    download_course(course_link, args.path, args.video, args.slide, args.dataset, args.exercise)
-=======
 
-        required_courses = get_to_download()
-
-        for course_id in required_courses:
+    links = get_to_download()
+    required_courses_by_id = links[1]
+    required_courses_by_link = links[0]
+    if(len(required_courses_by_id) > 0):
+        for course_id in required_courses_by_id:
             course = list(filter(lambda x: x.id == course_id,
                                  get_completed_courses()))[0]
-
             if(args.all):
                 download_course(course.link, args.path, args.all, args.all, args.all)
             else:
                 download_course(course.link, args.path, args.video, args.exercise, args.dataset)
->>>>>>> c25e52db10f3d4911fcbfce3648765973cc6c76b
+    if(len(required_courses_by_link) > 0):
+        for course_link in required_courses_by_link:
+            if(args.all):
+                download_course(course_link, args.path, args.all, args.all, args.all)
+            else:
+                download_course(course_link, args.path, args.video, args.exercise, args.dataset)
 
 
 def print_dash():
@@ -148,34 +108,22 @@ def handle_tracks(args):
     if wait(thread):
         if len(get_completed_tracks()) == 0:
             exit()
-<<<<<<< HEAD
-        required_tracks_by_id = get_to_download()[1]
-        required_tracks_by_link = get_to_download()[0]
-        if(len(required_tracks_by_id) > 0):
-            for track_id in required_tracks_by_id:
-                track = list(filter(lambda x: x.id == track_id,
-                                    get_completed_tracks()))[0]
-                if args.all:
-                    download_track(track.link, args.path, args.all, args.all, args.all, args.all)
-                else:
-                    download_track(track.link, args.path, args.video, args.slide, args.dataset, args.exercise)
-        if(len(required_tracks_by_link) > 0):
-            for course_link in required_tracks_by_link:
-                if(args.all):
-                    download_track(course_link, args.path, args.all, args.all, args.all, args.all)
-                else:
-                    download_track(course_link, args.path, args.video, args.slide, args.dataset, args.exercise)
-=======
-        required_tracks = get_to_download()
-
-        for track_id in required_tracks:
+    required_tracks_by_id = get_to_download()[1]
+    required_tracks_by_link = get_to_download()[0]
+    if(len(required_tracks_by_id) > 0):
+        for track_id in required_tracks_by_id:
             track = list(filter(lambda x: x.id == track_id,
                                 get_completed_tracks()))[0]
             if args.all:
                 download_track(track.link, args.path, args.all, args.all, args.all)
             else:
                 download_track(track.link, args.path, args.video, args.exercise, args.dataset)
->>>>>>> c25e52db10f3d4911fcbfce3648765973cc6c76b
+    if(len(required_tracks_by_link) > 0):
+        for course_link in required_tracks_by_link:
+            if(args.all):
+                download_track(course_link, args.path, args.all, args.all, args.all)
+            else:
+                download_track(course_link, args.path, args.video, args.exercise, args.dataset)
 
 
 def start_thread(func):
